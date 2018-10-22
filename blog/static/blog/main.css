@@ -160,3 +160,7 @@ textarea:focus, input:focus {
     -webkit-transition: color .2s;
     color: white !important;
 }
+
+ul {
+    list-style: none !important;
+}

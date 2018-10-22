@@ -75,6 +75,24 @@
                     {%  endif %}
                 </div>
             </article>
+            {%  if user_profile is None %}
+            <article class="media content-section">
+                <div class="row pl-2">
+                    <div class="col-12">
+                        Top users by posts
+                    </div>
+                    <ul class="col-12 mt-2">
+                        {% for user in all_users %}
+                            <li>
+                                <a href="{% url 'user-posts' user.username %}">
+                                    {{ user.username }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </article>
+            {% endif %}
             <div class="d-flex">
                 {% if user_profile is None %}
                     <a class="btn btn-sm btn-outline-primary mb-4 mr-3" href="{% url 'profile' %}">
