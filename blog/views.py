@@ -59,8 +59,13 @@ class UserPostListView(ListView):
     def get_context_data(self, **kwargs):
         visible_user = self.visible_user()
         logged_user = self.request.user
-        can_follow = (Follow.objects.filter(user=logged_user,
-                                            follow_user=visible_user).count() == 0)
+        print(logged_user.username == '', file=sys.stderr)
+
+        if logged_user.username == '':
+            can_follow = False
+        else:
+            can_follow = (Follow.objects.filter(user=logged_user,
+                                                follow_user=visible_user).count() == 0)
         data = super().get_context_data(**kwargs)
 
         data['user_profile'] = visible_user

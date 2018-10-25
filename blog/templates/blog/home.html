@@ -104,7 +104,7 @@
                         SETTINGS
                     </a>
                 {% endif %}
-                {%  if user_profile is not None and user_profile.id != user.id %}
+                {%  if user_profile is not None and user_profile.id != user.id  and user.username != '' %}
                     <form method="POST">
                         {% csrf_token %}
                         <div class="form-group">
