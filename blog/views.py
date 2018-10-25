@@ -68,16 +68,8 @@ class UserPostListView(ListView):
         return data
 
     def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        user = self.visible_user()
         return Post.objects.filter(author=user).order_by('-date_posted')
-
-    def follow_saver(self, request, num_to_add):
-        our_profile = Profile.objects.filter(user=request.user).first()
-        our_profile.following += num_to_add
-        our_profile.save()
-        their_profile = Profile.objects.filter(user=self.visible_user()).first()
-        their_profile.followers += num_to_add
-        their_profile.save()
 
     def post(self, request, *args, **kwargs):
         if request.user.id is not None:
@@ -88,11 +80,9 @@ class UserPostListView(ListView):
                     new_relation = Follow(user=request.user, follow_user=self.visible_user())
                     if follows_between.count() == 0:
                         new_relation.save()
-                        self.follow_saver(request, 1)
             elif 'unfollow' in request.POST:
                     if follows_between.count() > 0:
                         follows_between.delete()
-                        self.follow_saver(request, -1)
 
         return self.get(self, request, *args, **kwargs)
 
@@ -163,5 +153,37 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return data
 
 
-def about(request):
-    return render(request, 'blog/about.html')
+class FollowsListView(ListView):
+    model = Follow
+    template_name = 'blog/follow.html'
+    context_object_name = 'follows'
+
+    def visible_user(self):
+        return get_object_or_404(User, username=self.kwargs.get('username'))
+
+    def get_queryset(self):
+        user = self.visible_user()
+        return Follow.objects.filter(user=user).order_by('-date')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['follow'] = 'follows'
+        return data
+
+
+class FollowersListView(ListView):
+    model = Follow
+    template_name = 'blog/follow.html'
+    context_object_name = 'follows'
+
+    def visible_user(self):
+        return get_object_or_404(User, username=self.kwargs.get('username'))
+
+    def get_queryset(self):
+        user = self.visible_user()
+        return Follow.objects.filter(follow_user=user).order_by('-date')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['follow'] = 'followers'
+        return data

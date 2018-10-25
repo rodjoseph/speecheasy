@@ -63,15 +63,20 @@
                         </div>
                     {% else %}
                         <div class="col-6">
-                            <h3 class="white-important">
-                                {{ user.profile.followers }}
-                            </h3>
+                            <a href="{% url 'user-followers' user.username %}">
+                                <h3 class="white-important follow-click">
+                                    {{ user.profile.followers }}
+                                </h3>
+                            </a>
                         </div>
-                         <div class="col-6">
-                                <h3 class="white-important">
+
+                        <a href="{% url 'user-follows' user.username %}">
+                            <div class="col-6">
+                                <h3 class="white-important follow-click">
                                     {{ user.profile.following }}
                                 </h3>
-                        </div>
+                            </div>
+                        </a>
                     {%  endif %}
                 </div>
             </article>
