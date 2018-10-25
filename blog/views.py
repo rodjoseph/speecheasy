@@ -61,7 +61,7 @@ class UserPostListView(ListView):
         logged_user = self.request.user
         print(logged_user.username == '', file=sys.stderr)
 
-        if logged_user.username == '':
+        if logged_user.username == '' or logged_user is None:
             can_follow = False
         else:
             can_follow = (Follow.objects.filter(user=logged_user,
