@@ -53,13 +53,17 @@
                     {%  if user_profile != None %}
                         <div class="col-6">
                             <h3 class="white-important">
-                                {{ user_profile.profile.followers }}
+                                <a href="{% url 'user-followers' user_profile.username %}">
+                                    {{ user_profile.profile.followers }}
+                                </a>
                             </h3>
                         </div>
                          <div class="col-6">
+                            <a href="{% url 'user-follows' user_profile.username %}">
                                 <h3 class="white-important">
                                     {{ user_profile.profile.following }}
                                 </h3>
+                            </a>
                         </div>
                     {% else %}
                         <div class="col-6">
