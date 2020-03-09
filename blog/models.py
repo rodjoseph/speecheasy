@@ -5,6 +5,8 @@ from django.urls import reverse
 
 
 class Post(models.Model):
+    title = models.TextField(max_length=150)
+    embedLink = models.URLField(max_length=300)
     content = models.TextField(max_length=150)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

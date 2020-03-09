@@ -125,7 +125,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['content']
+    fields = ['content', 'title', 'embedLink']
     template_name = 'blog/post_new.html'
     success_url = '/'
 
