@@ -169,13 +169,14 @@
                                         href="{% url 'post-update' post.id %}">update</a>
                             {%  endif %}
                        </div>
-                   </div>
-                    <div
-                            class="mb-2"
-                            style="width: 100%; height: 1px; background-color: rgba(255, 255, 255, 0.1)"></div>
+                    </div>
+		    <div> <h3 class="white-important mb-3">{{post.title}}</h3></div>
                     <a
                             style="color: rgba(255, 255, 255, 0.5) !important;"
-                            href="{% url 'post-detail' post.id %}">
+                      href="{% url 'post-detail' post.id %}">
+		          {% if post.embed_link %}
+                  <iframe width="560" height="315" src=" {{ post.embed_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              {% endif %}
                         <p class="mb-4">
                             {{ post.content }}
                         </p>
