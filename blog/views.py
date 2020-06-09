@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post, Comment
+from blog.models import Post, Comment, Favorite
 from users.models import Follow, Profile
 import sys
 from django.contrib.auth.models import User
@@ -7,7 +7,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Count
 from .forms import NewCommentForm
-
+import re
+#from taggit.models import Tag
 
 def is_users(post_user, logged_user):
     return post_user == logged_user
@@ -46,6 +47,21 @@ class PostListView(LoginRequiredMixin, ListView):
             follows.append(obj.follow_user)
         return Post.objects.filter(author__in=follows).order_by('-date_posted')
 
+    # def post(self, request, *args, **kwargs):
+    #     if request.user.id is not None:
+    #         favorite_between = Favorite.objects.filter(user=request.user,
+    #                                                    post=request.post)
+
+    #         if 'favorite' in request.POST:
+    #             new_relation = Favorite(user=request.user, request.post))
+    #             if follows_between.count() == 0:
+    #                 new_relation.save()
+    #         elif 'unfavorite' in request.POST:
+    #             if follows_between.count() > 0:
+    #                 follows_between.delete()
+
+        return self.get(self, request, *args, **kwargs)
+
 
 class UserPostListView(LoginRequiredMixin, ListView):
     model = Post
@@ -82,12 +98,12 @@ class UserPostListView(LoginRequiredMixin, ListView):
                                                     follow_user=self.visible_user())
 
             if 'follow' in request.POST:
-                    new_relation = Follow(user=request.user, follow_user=self.visible_user())
-                    if follows_between.count() == 0:
-                        new_relation.save()
+                new_relation = Follow(user=request.user, follow_user=self.visible_user())
+                if follows_between.count() == 0:
+                    new_relation.save()
             elif 'unfollow' in request.POST:
-                    if follows_between.count() > 0:
-                        follows_between.delete()
+                if follows_between.count() > 0:
+                    follows_between.delete()
 
         return self.get(self, request, *args, **kwargs)
 
@@ -112,7 +128,6 @@ class PostDetailView(DetailView):
 
         return self.get(self, request, *args, **kwargs)
 
-
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
@@ -122,10 +137,9 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         return is_users(self.get_object().author, self.request.user)
 
-
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['content', 'title', 'embed_link']
+    fields = ['content', 'title', 'embed_link']#, 'tags']
     template_name = 'blog/post_new.html'
     success_url = '/'
 
@@ -141,7 +155,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['content']
+    fields = ['content', 'title', 'embed_link']
     template_name = 'blog/post_new.html'
     success_url = '/'
 
@@ -192,3 +206,13 @@ class FollowersListView(ListView):
         data = super().get_context_data(**kwargs)
         data['follow'] = 'followers'
         return data
+
+    def favoritePost(request):
+        if request.method == 'GET':
+               post_id = request.GET['post_id']
+               likedpost = Post.objects.get(pk=post_id) #getting the liked posts
+               m = Like(post=likedpost) # Creating Like Object
+               m.save()  # saving it to store in database
+               return HttpResponse("Success!") # Sending an success response
+        else:
+               return HttpResponse("Request method is not a GET")

@@ -1,232 +1,250 @@
 {% extends "blog/base.html" %}
 {% block content %}
-    <div class="row">
-        <div class="col-12 col-md-4 pr-4">
-            <h3 class="white-important mb-3">
-                Profile
+<div class="row">
+  <div class="col-12 col-md-4 pr-4">
+    <h3 class="white-important mb-3">
+      Profile
+    </h3>
+    <article class="media content-section" style="height: 140px">
+      {%  if user_profile != None %}
+      <div class="mt-2 d-flex full-width align-items-center">
+        <img
+          class="rounded-circle mr-3"
+          style="width: 100px; height: 100px;"
+          src="{{ user_profile.profile.image.url }}">
+        <div>
+          <h4 style="text-align: left"
+              class="white-important">
+            {{ user_profile.username }}
+          </h4>
+          <div style="text-align: left"
+               class="white-important">
+            {{ user_profile.email }}
+          </div>
+        </div>
+      </div>
+      {%  else %}
+      <div class="mt-2 d-flex full-width align-items-center">
+        <img
+          class="rounded-circle mr-3"
+          style="width: 100px; height: 100px;"
+          src="{{ user.profile.image.url }}">
+        <div>
+          <h4 style="text-align: left"
+              class="white-important">
+            {{ user.username }}
+          </h4>
+          <div style="text-align: left"
+               class="white-important">
+            {{ user.email }}
+          </div>
+        </div>
+      </div>
+      {%  endif %}
+    </article>
+    <article class="media content-section">
+      <div class="row full-width pl-2">
+        <div class="col-6">
+          Followers
+        </div>
+        <div class="col-6">
+          Following
+        </div>
+        {%  if user_profile != None %}
+        <div class="col-6">
+          <h3 class="white-important follow-click">
+            <a href="{% url 'user-followers' user_profile.username %}">
+              {{ user_profile.profile.followers }}
+            </a>
+          </h3>
+        </div>
+        <div class="col-6">
+          <a href="{% url 'user-follows' user_profile.username %}">
+            <h3 class="white-important follow-click">
+              {{ user_profile.profile.following }}
             </h3>
-            <article class="media content-section" style="height: 140px">
-                {%  if user_profile != None %}
-                    <div class="mt-2 d-flex full-width align-items-center">
-                        <img
-                           class="rounded-circle mr-3"
-                           style="width: 100px; height: 100px;"
-                           src="{{ user_profile.profile.image.url }}">
-                        <div>
-                            <h4 style="text-align: left"
-                                    class="white-important">
-                                {{ user_profile.username }}
-                            </h4>
-                            <div style="text-align: left"
-                                    class="white-important">
-                                {{ user_profile.email }}
-                            </div>
-                        </div>
-                    </div>
-                {%  else %}
-                    <div class="mt-2 d-flex full-width align-items-center">
-                        <img
-                           class="rounded-circle mr-3"
-                           style="width: 100px; height: 100px;"
-                           src="{{ user.profile.image.url }}">
-                        <div>
-                            <h4 style="text-align: left"
-                                    class="white-important">
-                                {{ user.username }}
-                            </h4>
-                            <div style="text-align: left"
-                                    class="white-important">
-                                {{ user.email }}
-                            </div>
-                        </div>
-                    </div>
-                {%  endif %}
-            </article>
-            <article class="media content-section">
-                <div class="row full-width pl-2">
-                    <div class="col-6">
-                            Followers
-                    </div>
-                    <div class="col-6">
-                            Following
-                    </div>
-                    {%  if user_profile != None %}
-                        <div class="col-6">
-                            <h3 class="white-important follow-click">
-                                <a href="{% url 'user-followers' user_profile.username %}">
-                                    {{ user_profile.profile.followers }}
-                                </a>
-                            </h3>
-                        </div>
-                         <div class="col-6">
-                            <a href="{% url 'user-follows' user_profile.username %}">
-                                <h3 class="white-important follow-click">
-                                    {{ user_profile.profile.following }}
-                                </h3>
-                            </a>
-                        </div>
-                    {% else %}
-                        <div class="col-6">
-                            <a href="{% url 'user-followers' user.username %}">
-                                <h3 class="white-important follow-click">
-                                    {{ user.profile.followers }}
-                                </h3>
-                            </a>
-                        </div>
+          </a>
+        </div>
+        {% else %}
+        <div class="col-6">
+          <a href="{% url 'user-followers' user.username %}">
+            <h3 class="white-important follow-click">
+              {{ user.profile.followers }}
+            </h3>
+          </a>
+        </div>
 
-                        <a href="{% url 'user-follows' user.username %}">
-                            <div class="col-6">
-                                <h3 class="white-important follow-click">
-                                    {{ user.profile.following }}
-                                </h3>
-                            </div>
-                        </a>
-                    {%  endif %}
-                </div>
-            </article>
-            {%  if user_profile is None %}
-            <article class="media content-section">
-                <div class="row pl-2">
-                    <div class="col-12">
-                        Top users by posts
-                    </div>
-                    <ul class="col-12 mt-2">
-                        {% for user in all_users %}
-                            <li>
-                                <a href="{% url 'user-posts' user.username %}">
-                                    {{ user.username }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </article>
+        <a href="{% url 'user-follows' user.username %}">
+          <div class="col-6">
+            <h3 class="white-important follow-click">
+              {{ user.profile.following }}
+            </h3>
+          </div>
+        </a>
+        {%  endif %}
+      </div>
+    </article>
+    {%  if user_profile is None %}
+    <article class="media content-section">
+      <div class="row pl-2">
+        <div class="col-12">
+          Top users by posts
+        </div>
+        <ul class="col-12 mt-2">
+          {% for user in all_users %}
+          <li>
+            <a href="{% url 'user-posts' user.username %}">
+              {{ user.username }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </article>
+    {% endif %}
+    <div class="d-flex">
+      {% if user_profile is None %}
+      <a class="btn btn-sm btn-outline-primary mb-4 mr-3" href="{% url 'profile' %}">
+        SETTINGS
+      </a>
+      {% endif %}
+      {%  if user_profile is not None and user_profile.id != user.id  and user.username != '' %}
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <button class="btn btn-sm btn-outline-primary"
+                  name="{% if can_follow %}follow{% else %}unfollow{% endif %}"
+                  type="submit">
+            {% if can_follow %}
+            FOLLOW
+            {% else %}
+            UNFOLLOW
             {% endif %}
-            <div class="d-flex">
-                {% if user_profile is None %}
-                    <a class="btn btn-sm btn-outline-primary mb-4 mr-3" href="{% url 'profile' %}">
-                        SETTINGS
-                    </a>
-                {% endif %}
-                {%  if user_profile is not None and user_profile.id != user.id  and user.username != '' %}
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <button class="btn btn-sm btn-outline-primary"
-                                    name="{% if can_follow %}follow{% else %}unfollow{% endif %}"
-                                    type="submit">
-                                 {% if can_follow %}
-                                     FOLLOW
-                                 {% else %}
-                                     UNFOLLOW
-                                 {% endif %}
-                            </button>
-                        </div>
-                    </form>
-                {% endif %}
-            </div>
+          </button>
         </div>
-        <div class="col-12 col-md-8">
-            <div class="full-width row">
-                <div class="col-6">
-                    <h3 class="white-important mb-3">
-                        Newsfeed
-                    </h3>
-                </div>
-                 <div class="col-6 no-padding">
-                    <h6
-                            style="position: absolute; bottom: 0; right: 0"
-                            class="white-important mb-3">
-                        {{ page_obj.start_index }} - {{ page_obj.end_index }} of
-                        {{ paginator.count }}
-                    </h6>
-                </div>
-            </div>
-
-            {% for post in posts %}
-                <article class="media content-section hovered-tweet">
-                <div style="width: 100%; word-break: break-all;">
-                    <div class="pb-2 row m-0" style="width: 100%; margin-right: 0 !important;">
-                       <div
-                               style="padding-left: 0px !important;"
-                               class="col-8 no-padding d-flex align-items-center">
-                           <img
-                               class="rounded-circle mr-2"
-                               style="width: 20px; height: 20px;"
-                               src="{{ post.author.profile.image.url }}">
-                           <a class="mr-2 white-important" href="{% url 'user-posts' post.author %}">
-                               {{ post.author }}
-                           </a>
-                       </div>
-                       <div class="col-4 d-flex flex-row-reverse no-padding align-items-center"
-                            style="padding-right: 0 !important;">
-                           {% if post.author == user %}
-                                <a class="material-icons ml-2"
-                                   style="font-size: 14px"
-                                        href="{% url 'post-delete' post.id %}">clear</a>
-                                <a class="material-icons ml-2"
-                                   style="font-size: 14px"
-                                        href="{% url 'post-update' post.id %}">update</a>
-                            {%  endif %}
-                       </div>
-                    </div>
-		    <div> <h3 class="white-important mb-3">{{post.title}}</h3></div>
-                    <a
-                            style="color: rgba(255, 255, 255, 0.5) !important;"
-                      href="{% url 'post-detail' post.id %}">
-		          {% if post.embed_link %}
-                  <iframe width="560" height="315" src=" {{ post.embed_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              {% endif %}
-                        <p class="mb-4">
-                            {{ post.content }}
-                        </p>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <small style="opacity: 0.4;">
-                                    {{ post.number_of_comments }} comment(s)
-                                </small>
-                            </div>
-                            <div class="col-6">
-                                <small
-                                        style="opacity: 0.4;"
-                                    class="white-important d-flex full-width flex-row-reverse">
-                                    {{ post.date_posted | date:"H:i l, d.m.y" }}
-                                </small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                </article>
-            {% endfor %}
-
-            <div class="full-width d-flex justify-content-center">
-                {% if is_paginated %}
-                    {% if page_obj.has_previous %}
-                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
-                                href="?page=1">First</a>
-                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
-                                href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                    {% endif %}
-
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <a class="btn btn-sm btn-info mb-4 mr-2"
-                                href="?page={{ num }}">{{ num }}</a>
-                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                            <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
-                                href="?page={{ num }}">{{ num }}</a>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                        <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
-                                href="?page={{ page_obj.next_page_number }}">Next</a>
-                           <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
-                            href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
+      </form>
+      {% endif %}
     </div>
+  </div>
+  <div class="col-12 col-md-8">
+    <div class="full-width row">
+      <div class="col-6">
+        <h3 class="white-important mb-3">
+          Newsfeed
+        </h3>
+      </div>
+      <div class="col-6 no-padding">
+        <h6
+          style="position: absolute; bottom: 0; right: 0"
+          class="white-important mb-3">
+          {{ page_obj.start_index }} - {{ page_obj.end_index }} of
+          {{ paginator.count }}
+        </h6>
+      </div>
+    </div>
+
+    {% for post in posts %}
+    <article class="media content-section hovered-tweet">
+      <div style="width: 100%; word-break: break-all;">
+        <div class="pb-2 row m-0" style="width: 100%; margin-right: 0 !important;">
+          <div
+            style="padding-left: 0px !important;"
+            class="col-8 no-padding d-flex align-items-center">
+            <img
+              class="rounded-circle mr-2"
+              style="width: 20px; height: 20px;"
+              src="{{ post.author.profile.image.url }}">
+            <a class="mr-2 white-important" href="{% url 'user-posts' post.author %}">
+              {{ post.author }}
+            </a>
+          </div>
+	  <div class="col-4 d-flex flex-row-reverse no-padding align-items-center"
+               style="padding-right: 0 !important;">
+            {% if post.author == user %}
+            <div class="dropdown show">
+	      <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<i class="fas fa-ellipsis-h"></i>
+	      </a>
+	      
+	      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		<a class="dropdown-item"
+		   href="{% url 'post-update' post.id %}">
+		  <i class="fas fa-edit"></i>
+		  Edit post
+		</a>
+		<a class="dropdown-item"
+		   href="{% url 'post-delete' post.id %}">
+		  <i class="fas fa-times"></i>
+		  Delete post
+		</a>
+	      </div>
+	    </div>
+          </div>
+	  {% endif %}
+        </div>
+	<div> <h3 class="white-important mb-3">{{post.title}}</h3></div>
+        <a
+          style="color: rgba(255, 255, 255, 0.5) !important;"
+          href="{% url 'post-detail' post.id %}">
+	  {% if post.embed_link %}
+	  <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src=" {{ post.embed_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	  </div>
+	  
+          {% endif %}
+          <p class="mb-4">
+            {{ post.content }}
+          </p>
+
+	  <!-- Icons -->
+	  <div class="row">
+	    <div class="col comment-button">
+	      <i class="far fa-comment"></i>
+	      {{ post.number_of_comments }}
+	    </div>
+	    <div class="col mic-button">
+	      <i class="fas fa-microphone"></i>
+	    </div>
+	    <div class="col favorite-button">
+	      <i class="far fa-star"></i>
+	      {{ post.number_of_favorites }}
+	    </div>
+	    <div class="col share-button">
+	      <i class="fas fa-share-square"></i>
+	    </div>
+	  </div>
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+
+    <div class="full-width d-flex justify-content-center">
+      {% if is_paginated %}
+      {% if page_obj.has_previous %}
+      <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+         href="?page=1">First</a>
+      <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+         href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+      <a class="btn btn-sm btn-info mb-4 mr-2"
+         href="?page={{ num }}">{{ num }}</a>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+						       <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+							  href="?page={{ num }}">{{ num }}</a>
+						       {% endif %}
+						       {% endfor %}
+
+						       {% if page_obj.has_next %}
+						       <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+							  href="?page={{ page_obj.next_page_number }}">Next</a>
+						       <a class="btn btn-sm btn-outline-secondary mb-4 mr-2"
+							  href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+						       {% endif %}
+						       {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock content %}
