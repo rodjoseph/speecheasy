@@ -2,6 +2,8 @@
 {% block content %}
 <div class="row">
   <div class="col-12 col-md-4 pr-4">
+
+    <!-- Profile information -->
     <h3 class="white-important mb-3">
       Profile
     </h3>
@@ -42,6 +44,8 @@
       </div>
       {%  endif %}
     </article>
+
+    <!-- Followers and Following -->
     <article class="media content-section">
       <div class="row full-width pl-2">
         <div class="col-6">
@@ -84,6 +88,8 @@
         {%  endif %}
       </div>
     </article>
+
+    <!-- Leaderboard -->
     {%  if user_profile is None %}
     <article class="media content-section">
       <div class="row pl-2">
@@ -126,6 +132,8 @@
       {% endif %}
     </div>
   </div>
+
+  
   <div class="col-12 col-md-8">
     <div class="full-width row">
       <div class="col-6">

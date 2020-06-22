@@ -19,9 +19,8 @@ class Post(models.Model):
     embed_link = models.URLField(default=None, max_length=300)
     content = models.TextField(max_length=150)
     date_posted = models.DateTimeField(default=timezone.now)
-    #slug = models.SlugField(unique=True, max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    #tags = TaggableManager()
+    tags = TaggableManager()
     
     def __str__(self):
         return self.content[:5]

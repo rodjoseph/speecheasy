@@ -1,0 +1,68 @@
+import React from 'react';
+import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge'
+import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed';
+
+const Post : React.FC<PostProps> = (props) => {
+    return (
+	<Card className="post">
+	  <article class="media content-section hovered-tweet">
+	    		<Card.Title>
+
+                <div style="width: 100%; word-break: break-all;">
+                    <div class="pb-2 row m-0" style="width: 100%; margin-right: 0 !important;">
+                       <div
+                               style="padding-left: 0px !important;"
+                               class="col-8 no-padding d-flex align-items-center">
+                           <img
+                               class="rounded-circle mr-2"
+                               style="width: 20px; height: 20px;"
+                               src="{{ post.author.profile.image.url }}">
+                           <a class="mr-2 white-important" href="{% url 'user-posts' post.author %}">
+                               {{ post.author }}
+                           </a>
+                       </div>
+                       <div class="col-4 d-flex flex-row-reverse no-padding align-items-center"
+                            style="padding-right: 0 !important;">
+                           {% if post.author == user %}
+                                <a class="material-icons ml-2"
+                                   style="font-size: 14px"
+                                        href="{% url 'post-delete' post.id %}">clear</a>
+                                <a class="material-icons ml-2"
+                                   style="font-size: 14px"
+                                        href="{% url 'post-update' post.id %}">update</a>
+                            {%  endif %}
+                       </div>
+                    </div>
+		    <div> <h3 class="white-important mb-3">{{post.title}}</h3></div>
+		    		  <h5 className="text-center">
+			<i className="fas fa-globe"></i>{props.title}
+		  </h5>
+		</Card.Title>
+                    <a
+                            style="color: rgba(255, 255, 255, 0.5) !important;"
+                      href="{% url 'post-detail' post.id %}">
+		          {% if post.embed_link %}
+                  <iframe width="560" height="315" src=" {{ post.embed_link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              {% endif %}
+                        <p class="mb-4">
+                            {{ post.content }}
+                        </p>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <small style="opacity: 0.4;">
+                                    {{ post.number_of_comments }} comment(s)
+                                </small>
+                            </div>
+                            <div class="col-6">
+                                <small
+                                        style="opacity: 0.4;"
+                                    class="white-important d-flex full-width flex-row-reverse">
+                                    {{ post.date_posted | date:"H:i l, d.m.y" }}
+                                </small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                </article>

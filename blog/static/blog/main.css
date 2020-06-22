@@ -207,20 +207,21 @@ input[type="file"]::-webkit-file-upload-button {
   margin: 0px 12px 0px 12px;
 }
 
-/* .comment-button:hover { */
-/*     -moz-border-radius: 30px; */
-/*     border-radius: 30px; */
-
-/*     background-color: teal; !important */
-/*     color: white; !important */
-/*     text-align: center; */
-/*     font-size: 2em; */
-/* } */
-/* } */
-
-.favorite-button {
+.favorite-button:hover {
+    color: #f1c40f; !important
 }
 
+.mic-button:hover {
+    color: #c0392b; !important
+}
+
+.comment-button:hover {
+    color: #3498db; !important
+}
+
+.share-button:hover {
+    color: #1abc9c; !important
+}
 .site-content {
     flex: 1;
 }
